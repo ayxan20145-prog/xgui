@@ -1,5 +1,10 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+use x11rb::{connect, connection::Connection};
+
+fn get_root_window() -> u32 {
+    let (conn, screen_num) = connect(None).unwrap();
+    let screen = &conn.setup().roots[screen_num];
+
+    screen.root
 }
 
 #[cfg(test)]
@@ -7,8 +12,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    fn test_root_window() {
+        let root = get_root_window();
+
+        assert_ne!(root, 0);
     }
 }
